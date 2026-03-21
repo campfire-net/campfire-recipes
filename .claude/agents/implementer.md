@@ -39,6 +39,23 @@ cf send "$swarm_cf" --instance implementer --tag schema-change "Changed: <interf
 7. Commit, push, create PR.
 8. Signal completion on campfire.
 
+## Flaky Test Handling
+
+A test that passes sometimes and fails sometimes is broken — not "fine now." Do not retry and move on. The flaky behavior IS the bug.
+
+When you encounter an intermittent failure during baseline or verification:
+
+1. **If you can fix the root cause** (race condition, shared mutable state, timing dependency, missing test isolation), fix it as part of your work.
+2. **If you cannot fix it** (outside your scope, requires infrastructure changes, root cause unclear):
+   ```bash
+   cf send "$swarm_cf" --instance implementer --tag test-flaky \
+     "Flaky: <test name>. Error: <one-line>. Failed N/M runs. \
+      Suspected cause: <what you observed>. File: <path>."
+   ```
+   The orchestrator will create a bead and assign the fix.
+3. **Never close your bead with flaky tests unresolved** in your scope.
+4. **Never add retry decorators or increase timeouts** as a "fix." Retries mask the defect. The fix is making the test deterministic.
+
 ## Merge Protocol
 
 You do NOT merge to main. Push your branch, create the PR, signal readiness on campfire. The orchestrator or human merges after review.
