@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quickstart — Campfire Recipes</title>
+  <meta name="description" content="Get started with Campfire Recipes in 5 minutes. Install the skills, start an architect session, and see real-time escalation in action.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-alt: #181818;
+      --border: #222222;
+      --text: #e8e4df;
+      --text-secondary: #8a8480;
+      --amber: #d97706;
+      --amber-light: #f59e0b;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --font-heading: 'Rubik', system-ui, sans-serif;
+      --font-body: 'Rubik', system-ui, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal-light); text-decoration: none; }
+    a:hover { color: var(--teal); }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Nav */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* Page layout */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      padding-top: 48px;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+    }
+
+    .sidebar-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 5px 10px;
+      border-radius: 5px;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text);
+      border-left-color: var(--amber);
+    }
+
+    .sidebar-nav .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      margin-right: 6px;
+    }
+
+    /* Content */
+    .content {
+      min-width: 0;
+      padding-bottom: 80px;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .page-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    /* Steps */
+    .step {
+      margin-bottom: 56px;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      margin-top: 24px;
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    li strong {
+      color: var(--text);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--teal-light);
+      background: rgba(13, 148, 136, 0.08);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .code-block {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      white-space: pre;
+      color: #bbb;
+      margin-bottom: 16px;
+    }
+
+    .code-block .comment { color: #3a3a3a; }
+    .code-block .cmd { color: var(--teal-light); }
+    .code-block .arrow { color: var(--amber); }
+    .code-block .skill { color: var(--amber-light); }
+
+    .code-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    /* Callout */
+    .callout {
+      background: rgba(217, 119, 6, 0.06);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .callout-teal {
+      background: rgba(13, 148, 136, 0.06);
+      border-color: rgba(13, 148, 136, 0.2);
+      border-left-color: var(--teal);
+    }
+
+    /* Terminal illustration */
+    .terminal-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .terminal {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      background: #161616;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .terminal-body {
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.65;
+      color: #bbb;
+      white-space: pre;
+    }
+
+    .t-comment { color: #3a3a3a; }
+    .t-cmd { color: var(--teal-light); }
+    .t-arrow { color: var(--amber); }
+    .t-dim { color: #555; }
+    .t-green { color: #4ade80; }
+    .t-amber { color: var(--amber); }
+
+    /* Next steps */
+    .next-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .next-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.15s;
+    }
+
+    .next-card:hover {
+      border-color: var(--amber);
+      color: var(--text);
+    }
+
+    .next-card-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .next-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .next-card-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .footer-brand span { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 700px) {
+      .page-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .terminal-pair { grid-template-columns: 1fr; }
+      .next-links { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">campfire/<span>recipes</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="quickstart.html" class="active">Quickstart</a></li>
+        <li><a href="manual.html">Manual</a></li>
+        <li><a href="https://getcampfire.dev">Protocol</a></li>
+        <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">On this page</div>
+    <ul class="sidebar-nav">
+      <li><a href="#prerequisites"><span class="step-num">00</span>Prerequisites</a></li>
+      <li><a href="#install"><span class="step-num">01</span>Install</a></li>
+      <li><a href="#first-campfire"><span class="step-num">02</span>First campfire</a></li>
+      <li><a href="#architect-session"><span class="step-num">03</span>Architect session</a></li>
+      <li><a href="#worker-session"><span class="step-num">04</span>Worker session</a></li>
+      <li><a href="#see-it-work"><span class="step-num">05</span>See it work</a></li>
+      <li><a href="#next-steps"><span class="step-num">→</span>Next steps</a></li>
+    </ul>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+
+    <div class="page-header">
+      <div class="page-label">Quickstart</div>
+      <h1>Up and running<br>in 5 minutes</h1>
+      <p class="page-sub" style="margin: 0;">Start an architect session and a worker session, escalate a question, and watch it get answered in real time.</p>
+    </div>
+
+    <!-- Step 0: Prerequisites -->
+    <div class="step" id="prerequisites">
+      <div class="step-header">
+        <span class="step-number">00 — Prerequisites</span>
+        <h2>What you need</h2>
+      </div>
+
+      <ul>
+        <li><strong>Campfire CLI</strong> (<code>cf</code>) installed and on PATH. Install from <a href="https://getcampfire.dev">getcampfire.dev</a>.</li>
+        <li><strong>Claude Code</strong> installed. Download from <a href="https://claude.ai/claude-code">claude.ai/claude-code</a>.</li>
+        <li>Two terminal tabs (or windows). You'll run the architect in one and the worker in the other.</li>
+      </ul>
+
+      <div class="callout" style="margin-top: 16px;">
+        <p>Verify <code>cf</code> is installed: run <code>cf version</code>. You should see a version number.</p>
+      </div>
+    </div>
+
+    <!-- Step 1: Install -->
+    <div class="step" id="install">
+      <div class="step-header">
+        <span class="step-number">01 — Install</span>
+        <h2>Copy the recipes</h2>
+      </div>
+
+      <p>Clone the repo and copy the skills to your Claude Code global directory:</p>
+
+      <div class="code-block"><span class="comment"># Clone the recipes</span>
+<span class="cmd">git clone</span> https://github.com/campfire-net/campfire-recipes.git
+
+<span class="comment"># Copy skills to Claude Code global directory</span>
+<span class="cmd">cp -r</span> campfire-recipes/.claude/skills/* ~/.claude/skills/
+
+<span class="comment"># Optional: copy agent specs to your project</span>
+<span class="cmd">cp</span> campfire-recipes/.claude/agents/* your-project/.claude/agents/</div>
+
+      <p>New Claude Code sessions pick up skills automatically. No restart needed for existing sessions — they'll see the skills on next invocation.</p>
+
+      <div class="callout callout-teal">
+        <p>The skills land at <code>~/.claude/skills/cf-architect/</code>, <code>cf-escalate/</code>, and <code>cf-coordinate/</code>. Each contains a <code>SKILL.md</code> that Claude Code reads when you invoke the skill.</p>
+      </div>
+    </div>
+
+    <!-- Step 2: Create a campfire -->
+    <div class="step" id="first-campfire">
+      <div class="step-header">
+        <span class="step-number">02 — Setup</span>
+        <h2>Create a project campfire</h2>
+      </div>
+
+      <p>Navigate to the project you want agents to coordinate on, then create a root campfire. This writes <code>.campfire/root</code> so all agents in this directory auto-discover it.</p>
+
+      <div class="code-block"><span class="cmd">cd</span> your-project/
+
+<span class="comment"># Start a swarm campfire anchored to this project</span>
+<span class="cmd">cf swarm start</span> --description "quickstart demo"
+
+<span class="comment"># Verify it was created</span>
+<span class="cmd">cf swarm status</span>
+<span class="arrow">→</span> Campfire ID: abc123...
+<span class="arrow">→</span> Members: 0
+<span class="arrow">→</span> Messages: 0</div>
+
+      <p>Leave this terminal open. Open two more tabs for the architect and worker sessions.</p>
+    </div>
+
+    <!-- Step 3: Architect session -->
+    <div class="step" id="architect-session">
+      <div class="step-header">
+        <span class="step-number">03 — Architect session</span>
+        <h2>Start the architect</h2>
+      </div>
+
+      <p>In a new Claude Code session (Tab 2), launch the architect with a design document. The architect loads the design context once, then waits silently for questions.</p>
+
+      <div class="code-label">Tab 2 — Architect session</div>
+      <div class="code-block"><span class="comment"># In Claude Code, invoke the skill:</span>
+<span class="skill">/cf-architect</span> "docs/design/architecture.md"
+
+<span class="comment"># Claude will:</span>
+<span class="arrow">→</span> Find the swarm campfire from .campfire/root
+<span class="arrow">→</span> Read your design document
+<span class="arrow">→</span> Announce: "Architect online. Monitoring for escalations."
+<span class="arrow">→</span> Block on cf read --follow --tag escalation
+<span class="arrow">→</span> [waiting...]</div>
+
+      <div class="callout">
+        <p>No design document yet? Pass a description inline: <code>/cf-architect "This is a REST API with a PostgreSQL backend. Prefer simple over clever."</code></p>
+      </div>
+
+      <p>The architect is now dormant — it's running but consuming zero tokens until a question arrives.</p>
+    </div>
+
+    <!-- Step 4: Worker session -->
+    <div class="step" id="worker-session">
+      <div class="step-header">
+        <span class="step-number">04 — Worker session</span>
+        <h2>Start a worker and escalate</h2>
+      </div>
+
+      <p>In another Claude Code session (Tab 3), start working. When you hit a design decision, escalate instead of guessing.</p>
+
+      <div class="code-label">Tab 3 — Worker session</div>
+      <div class="code-block"><span class="comment"># Start coordination</span>
+<span class="skill">/cf-coordinate</span> start
+
+<span class="comment"># Work on your task...</span>
+<span class="comment"># Hit a design question — escalate:</span>
+<span class="skill">/cf-escalate</span> "Should auth tokens use optimistic
+or pessimistic locking? We have high read volume
+but occasional concurrent writes. See pkg/auth/token.go."
+
+<span class="comment"># Claude will:</span>
+<span class="arrow">→</span> Post the question to the campfire with --tag escalation
+<span class="arrow">→</span> Block on cf await (your context is preserved)
+<span class="arrow">→</span> [waiting for architect...]</div>
+    </div>
+
+    <!-- Step 5: See it work -->
+    <div class="step" id="see-it-work">
+      <div class="step-header">
+        <span class="step-number">05 — See it work</span>
+        <h2>Watch the escalation resolve</h2>
+      </div>
+
+      <p>Switch back to Tab 2 (the architect). You'll see it wake up as the escalation arrives:</p>
+
+      <div class="terminal-pair">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            Tab 2 — Architect
+          </div>
+          <div class="terminal-body"><span class="t-dim">[blocking...]</span>
+
+<span class="t-amber">escalation</span> from worker:
+"Should auth tokens use
+optimistic or pessimistic
+locking?..."
+
+<span class="t-dim">Checking prior rulings...</span>
+<span class="t-dim">Reading pkg/auth/token.go...</span>
+
+<span class="t-green">→ Ruling posted:</span>
+"Use optimistic locking.
+Read volume dominates.
+See design §3.2."
+
+<span class="t-dim">[back to monitoring]</span></div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            Tab 3 — Worker
+          </div>
+          <div class="terminal-body"><span class="t-dim">Escalation posted: msg-xyz</span>
+<span class="t-dim">Waiting for ruling...</span>
+
+<span class="t-dim">[blocking...]</span>
+
+<span class="t-green">→ Ruling received:</span>
+"Use optimistic locking.
+Read volume dominates.
+See design §3.2."
+
+<span class="t-dim">Continuing with ruling...</span></div>
+        </div>
+      </div>
+
+      <p>The worker resumes automatically with the architect's ruling in context. No copy-paste, no tab switching, no context loss.</p>
+
+      <div class="callout callout-teal">
+        <p>No architect running? A human can fulfill manually from any terminal: <code>cf send &lt;campfire-id&gt; --fulfills &lt;msg-id&gt; --tag decision "Use optimistic locking."</code></p>
+      </div>
+
+      <h3>When you're done</h3>
+      <p>Tear down the swarm campfire when the work session is complete:</p>
+      <div class="code-block"><span class="cmd">cf swarm end</span>
+<span class="arrow">→</span> Swarm ended. Messages preserved in local store.</div>
+    </div>
+
+    <!-- Next steps -->
+    <div class="step" id="next-steps">
+      <div class="step-header">
+        <span class="step-number">→</span>
+        <h2>Next steps</h2>
+      </div>
+
+      <p>You've seen the basic escalation loop. Here's where to go next:</p>
+
+      <div class="next-links">
+        <a href="manual.html" class="next-card">
+          <div class="next-card-label">Reference</div>
+          <div class="next-card-title">Usage Manual</div>
+          <div class="next-card-sub">All three skills in depth, agent spec setup, view configuration, and the escalation cascade pattern.</div>
+        </a>
+        <a href="https://github.com/campfire-net/campfire-recipes/tree/main/examples/standing-architect" class="next-card">
+          <div class="next-card-label">Example</div>
+          <div class="next-card-title">Standing Architect Demo</div>
+          <div class="next-card-sub">Runnable demo: architect + 2 workers, real escalation and fulfillment.</div>
+        </a>
+        <a href="https://github.com/campfire-net/campfire-recipes/tree/main/examples/escalation-cascade" class="next-card">
+          <div class="next-card-label">Example</div>
+          <div class="next-card-title">Escalation Cascade</div>
+          <div class="next-card-sub">3-level campfire hierarchy. Post at the leaf, see it at the root.</div>
+        </a>
+        <a href="https://getcampfire.dev" class="next-card">
+          <div class="next-card-label">Protocol</div>
+          <div class="next-card-title">getcampfire.dev</div>
+          <div class="next-card-sub">The Campfire protocol spec, CLI reference, and how campfires actually work.</div>
+        </a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">campfire/<span>recipes</span></div>
+      <div class="footer-links">
+        <a href="index.html">Overview</a>
+        <a href="manual.html">Manual</a>
+        <a href="https://getcampfire.dev">getcampfire.dev</a>
+        <a href="https://github.com/campfire-net/campfire-recipes">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campfire Recipes — Coordination patterns for AI agents</title>
+  <meta name="description" content="Ready-to-use coordination patterns for AI agents using the Campfire protocol. Skills, agent specs, and examples for Claude Code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-alt: #181818;
+      --border: #222222;
+      --text: #e8e4df;
+      --text-secondary: #8a8480;
+      --amber: #d97706;
+      --amber-light: #f59e0b;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --font-heading: 'Rubik', system-ui, sans-serif;
+      --font-body: 'Rubik', system-ui, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal-light); text-decoration: none; }
+    a:hover { color: var(--teal); }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Nav */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--amber);
+      color: #000;
+      padding: 7px 16px;
+      border-radius: 6px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover { background: var(--amber-light); color: #000; }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 72px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    h1 span { color: var(--amber); }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: #000;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--amber-light); color: #000; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: var(--text-secondary); color: var(--text); }
+
+    /* Recipes grid */
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      font-size: 15px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .recipe-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .recipe-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-2px);
+    }
+
+    .recipe-icon {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--teal);
+      background: rgba(13, 148, 136, 0.1);
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .recipe-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .recipe-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Pattern overview */
+    .pattern-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .pattern-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .pattern-item h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .pattern-item p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    pre, code {
+      font-family: var(--font-mono);
+    }
+
+    .code-block {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre;
+      color: #ccc;
+    }
+
+    .code-block .comment { color: #4a4a4a; }
+    .code-block .cmd { color: var(--teal-light); }
+    .code-block .arrow { color: var(--amber); }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 28px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--amber);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .footer-brand span { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      .pattern-item { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">campfire/<span>recipes</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Overview</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="manual.html">Manual</a></li>
+        <li><a href="https://getcampfire.dev">Protocol</a></li>
+        <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
+      </ul>
+      <a href="quickstart.html" class="nav-cta">Get started →</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-label">campfire-net / campfire-recipes</div>
+    <h1>Coordination patterns<br>for <span>AI agents</span></h1>
+    <p class="hero-sub">
+      Ready-to-use skills, agent specs, and examples built on the Campfire protocol.
+      Copy, adapt, run.
+    </p>
+    <div class="hero-actions">
+      <a href="quickstart.html" class="btn-primary">Get started in 5 minutes</a>
+      <a href="https://github.com/campfire-net/campfire-recipes" class="btn-ghost">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">Recipes</div>
+    <h2>What's included</h2>
+    <p class="section-sub">Three skills and two agent specs — install once, use across all your projects.</p>
+
+    <div class="recipe-grid">
+      <div class="recipe-card">
+        <span class="recipe-icon">/cf-architect</span>
+        <h3>Standing Architect</h3>
+        <p>One agent holds design context and monitors for escalations. Workers ask questions and block until answered. Zero token cost when idle.</p>
+      </div>
+      <div class="recipe-card">
+        <span class="recipe-icon">/cf-escalate</span>
+        <h3>Escalation</h3>
+        <p>One command: post a question, block until answered. The architect or a human fulfills it. Your context is preserved while waiting.</p>
+      </div>
+      <div class="recipe-card">
+        <span class="recipe-icon">/cf-coordinate</span>
+        <h3>Multi-Session Coordination</h3>
+        <p>Multiple agents working the same repo. Announce what you're touching. Schema changes propagate automatically. Merges stay clean.</p>
+      </div>
+      <div class="recipe-card">
+        <span class="recipe-icon">agent</span>
+        <h3>Architect Agent Spec</h3>
+        <p>Drop-in <code>.claude/agents/</code> spec for the standing architect role. Includes monitoring loop, ruling standards, and exit behavior.</p>
+      </div>
+      <div class="recipe-card">
+        <span class="recipe-icon">agent</span>
+        <h3>Implementer Agent Spec</h3>
+        <p>Agent spec showing escalation protocol, campfire signals, and merge coordination for a worker session.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-label">Patterns</div>
+    <h2>How they work</h2>
+    <p class="section-sub">Three coordination patterns, each solving a specific multi-agent problem.</p>
+
+    <div class="pattern-list">
+      <div class="pattern-item">
+        <div>
+          <h3>Standing Architect</h3>
+          <p>One long-running agent holds design context. Workers ask it questions instead of guessing — or loading the design doc themselves. N workers share one architect. The architect is dormant between questions, so idle cost is zero.</p>
+        </div>
+        <div class="code-block"><span class="comment"># Session 1 — architect</span>
+<span class="cmd">/cf-architect</span> "docs/design/auth.md"
+<span class="arrow">→</span> Loads design context
+<span class="arrow">→</span> Monitors for escalations
+
+<span class="comment"># Session 2 — worker</span>
+<span class="cmd">/cf-escalate</span> "Optimistic or pessimistic
+  locking for auth tokens?"
+<span class="arrow">→</span> Posts question, blocks
+<span class="arrow">→</span> Architect answers
+<span class="arrow">→</span> Worker resumes with ruling</div>
+      </div>
+
+      <div class="pattern-item">
+        <div>
+          <h3>Escalation Cascade</h3>
+          <p>Messages flow up through nested campfires via tag filtering. A worker's question reaches the human without anyone manually forwarding it. One human monitoring command sees everything that needs them, across all teams.</p>
+        </div>
+        <div class="code-block">Root Campfire
+<span class="comment">  ← Human monitors here</span>
+  └── Team Campfire
+        └── Worker posts
+            --tag gate-human
+            <span class="arrow">→</span> Propagates to root
+
+<span class="comment"># Human sees everything:</span>
+<span class="cmd">cf read</span> "$root" --follow \
+  --tag gate-human</div>
+      </div>
+
+      <div class="pattern-item">
+        <div>
+          <h3>Multi-Session Merge Coordination</h3>
+          <p>Multiple agents working the same repo announce what files they're touching. Schema changes propagate to all sessions via the root campfire. Each session checks for conflicts before continuing. Merge conflicts become rare.</p>
+        </div>
+        <div class="code-block"><span class="comment"># Session A</span>
+<span class="cmd">cf send</span> "$root" --tag status \
+  "Working on auth. Touching: pkg/auth/"
+
+<span class="comment"># Session B — checks for conflicts</span>
+<span class="cmd">cf read</span> "$root" \
+  --tag schema-change --peek
+<span class="arrow">→</span> Sees Session A's interface change
+<span class="arrow">→</span> Pulls before continuing</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-label">Field results</div>
+    <h2>Numbers from production use</h2>
+    <p class="section-sub">These patterns were developed across an active portfolio of 11 projects. One week of data:</p>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">1,400+</span>
+        <span class="stat-label">commits in one week<br>across 11 repos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">300+</span>
+        <span class="stat-label">features shipped</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">1,700+</span>
+        <span class="stat-label">agent dispatches<br>coordinated</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">concurrent swarms<br>without merge conflicts</span>
+      </div>
+    </div>
+    <p style="margin-top: 24px; font-size: 13px; color: var(--text-secondary);">
+      Your mileage will vary. The coordination patterns are general-purpose. The numbers reflect one specific workflow.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">campfire/<span>recipes</span></div>
+      <div class="footer-links">
+        <a href="quickstart.html">Quickstart</a>
+        <a href="manual.html">Manual</a>
+        <a href="https://getcampfire.dev">getcampfire.dev</a>
+        <a href="https://github.com/campfire-net/campfire-recipes">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
