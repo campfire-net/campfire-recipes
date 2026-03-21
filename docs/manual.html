@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage Manual — Campfire Recipes</title>
+  <meta name="description" content="Comprehensive reference for all Campfire Recipes: cf-architect, cf-escalate, cf-coordinate, agent specs, campfire topology, and troubleshooting.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-alt: #181818;
+      --border: #222222;
+      --text: #e8e4df;
+      --text-secondary: #8a8480;
+      --amber: #d97706;
+      --amber-light: #f59e0b;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --font-heading: 'Rubik', system-ui, sans-serif;
+      --font-body: 'Rubik', system-ui, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal-light); text-decoration: none; }
+    a:hover { color: var(--teal); }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Nav */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* Page layout */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      padding-top: 48px;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+    }
+
+    .sidebar-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-secondary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 5px 10px;
+      border-radius: 5px;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text);
+      border-left-color: var(--amber);
+    }
+
+    .sidebar-nav .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      margin-right: 6px;
+    }
+
+    /* Content */
+    .content {
+      min-width: 0;
+      padding-bottom: 80px;
+    }
+
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .page-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      background: rgba(217, 119, 6, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      margin-top: 28px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    li strong {
+      color: var(--text);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--teal-light);
+      background: rgba(13, 148, 136, 0.08);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .code-block {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      white-space: pre;
+      color: #bbb;
+      margin-bottom: 16px;
+    }
+
+    .code-block .comment { color: #3a3a3a; }
+    .code-block .cmd { color: var(--teal-light); }
+    .code-block .arrow { color: var(--amber); }
+    .code-block .skill { color: var(--amber-light); }
+
+    .code-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    /* Callout */
+    .callout {
+      background: rgba(217, 119, 6, 0.06);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .callout-teal {
+      background: rgba(13, 148, 136, 0.06);
+      border-color: rgba(13, 148, 136, 0.2);
+      border-left-color: var(--teal);
+    }
+
+    /* Terminal pair */
+    .terminal-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .terminal {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      background: #161616;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .terminal-body {
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.65;
+      color: #bbb;
+      white-space: pre;
+    }
+
+    .t-comment { color: #3a3a3a; }
+    .t-cmd { color: var(--teal-light); }
+    .t-arrow { color: var(--amber); }
+    .t-dim { color: #555; }
+    .t-green { color: #4ade80; }
+    .t-amber { color: var(--amber); }
+
+    /* Prop table */
+    .prop-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .prop-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .prop-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #181818;
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    .prop-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--teal-light);
+      white-space: nowrap;
+    }
+
+    .prop-table tr:last-child td { border-bottom: none; }
+
+    /* Topology diagram */
+    .topology {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.8;
+      color: #bbb;
+      margin-bottom: 20px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .topology .topo-root { color: var(--amber); }
+    .topology .topo-mid { color: var(--teal-light); }
+    .topology .topo-leaf { color: #bbb; }
+    .topology .topo-dim { color: #3a3a3a; }
+    .topology .topo-tag { color: #777; }
+
+    /* Next steps */
+    .next-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .next-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.15s;
+    }
+
+    .next-card:hover {
+      border-color: var(--amber);
+      color: var(--text);
+    }
+
+    .next-card-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .next-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .next-card-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .footer-brand span { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 700px) {
+      .page-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .terminal-pair { grid-template-columns: 1fr; }
+      .next-links { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">campfire/<span>recipes</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="manual.html" class="active">Manual</a></li>
+        <li><a href="https://getcampfire.dev">Protocol</a></li>
+        <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">On this page</div>
+    <ul class="sidebar-nav">
+      <li><a href="#cf-architect"><span class="step-num">01</span>cf-architect</a></li>
+      <li><a href="#cf-escalate"><span class="step-num">02</span>cf-escalate</a></li>
+      <li><a href="#cf-coordinate"><span class="step-num">03</span>cf-coordinate</a></li>
+      <li><a href="#agent-specs"><span class="step-num">04</span>Agent specs</a></li>
+      <li><a href="#topology"><span class="step-num">05</span>Topology</a></li>
+      <li><a href="#troubleshooting"><span class="step-num">06</span>Troubleshooting</a></li>
+    </ul>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+
+    <div class="page-header">
+      <div class="page-label">Reference</div>
+      <h1>Usage Manual</h1>
+      <p class="page-sub" style="margin: 0;">Complete reference for every recipe — skills, agent specs, campfire topology, and troubleshooting.</p>
+    </div>
+
+    <!-- Section 1: cf-architect -->
+    <div class="section" id="cf-architect">
+      <div class="section-header">
+        <span class="section-tag">/cf-architect</span>
+        <h2>Standing Architect</h2>
+      </div>
+
+      <p>Launches a standing design authority in the current session. The architect loads a design document once, announces itself on the campfire, and blocks waiting for escalation questions from workers. It consumes zero tokens when idle.</p>
+
+      <h3>What it does</h3>
+      <ol>
+        <li>Finds or creates a swarm campfire (reads <code>.campfire/root</code> if present).</li>
+        <li>Loads design context — from a file path, an inline description, or a design campfire ID.</li>
+        <li>Announces: <code>Architect online. Monitoring for escalations.</code></li>
+        <li>Blocks on <code>cf read --follow --tag escalation</code> — dormant until a question arrives.</li>
+        <li>When an escalation comes in: checks prior rulings, reads any referenced source, makes a ruling, posts <code>--fulfills</code>.</li>
+        <li>Returns to blocking. Repeat.</li>
+      </ol>
+
+      <h3>When to use</h3>
+      <ul>
+        <li><strong>Multi-session work</strong> — any time two or more agent sessions are running on the same repo.</li>
+        <li><strong>Parallel agents</strong> — when worker agents should not each load the full design context.</li>
+        <li><strong>Shared design authority</strong> — when you want rulings to be consistent across all workers in a session.</li>
+      </ul>
+
+      <h3>Configuration</h3>
+      <p>Pass arguments to the skill when invoking it:</p>
+
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Argument</th>
+            <th>Effect</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"path/to/design.md"</td>
+            <td>Read the file as the design document. Architect loads it fully before monitoring.</td>
+          </tr>
+          <tr>
+            <td>"Design campfire: &lt;id&gt;"</td>
+            <td>Read deliberation history from a design campfire: <code>cf read &lt;id&gt; --all</code>.</td>
+          </tr>
+          <tr>
+            <td>"&lt;inline description&gt;"</td>
+            <td>Use the description itself as design context. Useful for quick sessions without a doc.</td>
+          </tr>
+          <tr>
+            <td>(both path and campfire)</td>
+            <td>Combine both sources. File provides structure; campfire provides recent decisions.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Ruling standards</h3>
+      <ul>
+        <li><strong>Decide, don't defer.</strong> Workers are blocked. A fast good-enough ruling beats a slow perfect one.</li>
+        <li><strong>Cite the design.</strong> Every ruling references the relevant section or prior decision.</li>
+        <li><strong>Be consistent.</strong> Before ruling, check prior decisions: <code>cf read "$campfire" --tag decision --all</code>.</li>
+        <li><strong>Escalate to human when needed.</strong> Novel trade-offs or major consequences get tagged <code>gate-human</code>.</li>
+      </ul>
+
+      <h3>Example session</h3>
+      <div class="code-label">Session 1 — invoke the skill in Claude Code</div>
+      <div class="code-block"><span class="skill">/cf-architect</span> "docs/design/auth-system.md"
+
+<span class="comment"># Claude Code:</span>
+<span class="arrow">→</span> Found swarm campfire from .campfire/root
+<span class="arrow">→</span> Reading docs/design/auth-system.md...
+<span class="arrow">→</span> Design context loaded (JWT 15m expiry, httpOnly cookies, no localStorage)
+<span class="arrow">→</span> Announced: "Architect online. Monitoring for escalations."
+<span class="arrow">→</span> [blocking on cf read --follow --tag escalation]
+
+<span class="comment"># Escalation arrives from a worker:</span>
+<span class="arrow">→</span> escalation: "Should token refresh require old expired token?"
+<span class="arrow">→</span> Checking prior rulings... none on refresh strategy
+<span class="arrow">→</span> Ruling: "Use refresh tokens. httpOnly cookie stores both. Expired JWT
+        does not prove identity — require refresh token instead."
+<span class="arrow">→</span> Posted --fulfills msg-abc --tag decision
+<span class="arrow">→</span> [back to monitoring]</div>
+
+      <div class="callout">
+        <p>The architect is read-only on code. It reads source to inform rulings. It does not edit files or pick up work items.</p>
+      </div>
+    </div>
+
+    <!-- Section 2: cf-escalate -->
+    <div class="section" id="cf-escalate">
+      <div class="section-header">
+        <span class="section-tag">/cf-escalate</span>
+        <h2>Escalation</h2>
+      </div>
+
+      <p>Posts a design question to the campfire and blocks until the architect (or a human) answers. The worker's context is fully preserved while waiting — no polling, no tab switching, no context loss when the answer arrives.</p>
+
+      <h3>What it does</h3>
+      <ol>
+        <li>Finds the swarm campfire (reads <code>.campfire/root</code>, or discovers via <code>cf ls</code>).</li>
+        <li>Posts the question with <code>--tag escalation --future</code> — marking it as a promise awaiting fulfillment.</li>
+        <li>Blocks on <code>cf await &lt;campfire&gt; &lt;msg-id&gt; --timeout 15m</code>.</li>
+        <li>When fulfilled: parses the decision, reports it, continues work using the ruling.</li>
+        <li>On timeout: posts a <code>--tag blocker</code> message and reports that no ruling was received.</li>
+      </ol>
+
+      <h3>When to use</h3>
+      <ul>
+        <li><strong>Design decisions</strong> — locking strategy, API shape, error handling approach.</li>
+        <li><strong>Scope ambiguity</strong> — unclear whether something is in or out of scope for the current task.</li>
+        <li><strong>Interface changes</strong> — before changing a shared interface that other sessions depend on.</li>
+        <li><strong>Novel trade-offs</strong> — anything the implementer shouldn't decide unilaterally.</li>
+      </ul>
+
+      <h3>Category tags</h3>
+      <p>The skill applies <code>--tag escalation</code> automatically. You can signal the category in your question text — the architect reads the full message regardless of tags. Common categories:</p>
+
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Use for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>architecture</td>
+            <td>System structure, component boundaries, tech choices</td>
+          </tr>
+          <tr>
+            <td>scope</td>
+            <td>What is and isn't in the current work item</td>
+          </tr>
+          <tr>
+            <td>interface</td>
+            <td>Public APIs, shared structs, protocol contracts</td>
+          </tr>
+          <tr>
+            <td>dependency</td>
+            <td>External libraries, service dependencies, version pins</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Writing good escalations</h3>
+      <p>Include: the specific question, relevant file paths and line numbers, the trade-offs you see, and any constraints you're already working within. The more context in the escalation, the faster and better the ruling.</p>
+
+      <h3>Example: worker asks about locking strategy</h3>
+
+      <div class="terminal-pair">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            Session 2 — Worker
+          </div>
+          <div class="terminal-body"><span class="t-amber">/cf-escalate</span> "Locking strategy for auth
+tokens in pkg/auth/token.go.
+High read volume, rare concurrent
+writes. Optimistic or pessimistic?
+Trade-off: optimistic = retry on
+conflict, pessimistic = serializes
+all writes."
+
+<span class="t-dim">→ Posted escalation: msg-xyz</span>
+<span class="t-dim">→ Waiting for ruling...</span>
+<span class="t-dim">[blocking...]</span>
+
+<span class="t-green">→ Ruling received:</span>
+"Use optimistic locking. Read
+volume dominates. Retry on write
+conflict is acceptable. Ref: design
+§4.1 — prefer reads."
+
+<span class="t-dim">→ Continuing with ruling...</span></div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            Session 1 — Architect
+          </div>
+          <div class="terminal-body"><span class="t-dim">[blocking on --follow...]</span>
+
+<span class="t-amber">escalation</span> from worker:
+"Locking strategy for auth
+tokens... optimistic or
+pessimistic?"
+
+<span class="t-dim">Checking prior rulings...</span>
+<span class="t-dim">  none on locking strategy</span>
+<span class="t-dim">Reading pkg/auth/token.go...</span>
+
+<span class="t-green">→ Ruling posted:</span>
+"Use optimistic locking..."
+  --fulfills msg-xyz
+  --tag decision
+
+<span class="t-dim">[back to monitoring]</span></div>
+        </div>
+      </div>
+
+      <div class="callout callout-teal">
+        <p>No architect running? A human can fulfill any escalation from any terminal: <code>cf send &lt;campfire&gt; --fulfills &lt;msg-id&gt; --tag decision "Use optimistic locking."</code></p>
+      </div>
+    </div>
+
+    <!-- Section 3: cf-coordinate -->
+    <div class="section" id="cf-coordinate">
+      <div class="section-header">
+        <span class="section-tag">/cf-coordinate</span>
+        <h2>Multi-Session Coordination</h2>
+      </div>
+
+      <p>Announces work, reads other sessions' status and schema changes, and routes human-needed decisions to a single monitoring point. Use this when two or more Claude Code sessions are running concurrently on the same repo.</p>
+
+      <h3>What it does</h3>
+      <p>The skill has four subcommands, each a targeted campfire operation:</p>
+
+      <h3>start — join or create the project campfire</h3>
+      <p>Reads <code>.campfire/root</code>. Creates a swarm campfire if none exists. Announces this session. Reads what other sessions have posted (status, schema changes). Reports active sessions and recent changes.</p>
+
+      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+
+<span class="arrow">→</span> Project campfire: abc123...
+<span class="arrow">→</span> Announcing: "Session started. Working on: auth middleware refactor."
+<span class="arrow">→</span> Active sessions: Session B (working on billing endpoint)
+<span class="arrow">→</span> Schema changes: none since last read</div>
+
+      <h3>status — see what's happening</h3>
+      <p>Reads all status messages, schema changes, and pending human decisions from the project campfire. Run this before starting a new file or touching a shared interface.</p>
+
+      <div class="code-block"><span class="skill">/cf-coordinate</span> status
+
+<span class="arrow">→</span> === Active sessions ===
+<span class="arrow">→</span> Session A: auth middleware refactor (pkg/auth/, pkg/middleware/)
+<span class="arrow">→</span> Session B: billing endpoint (pkg/billing/)
+
+<span class="arrow">→</span> === Schema changes ===
+<span class="arrow">→</span> AuthToken struct: added RefreshToken field. Affects: pkg/billing/client.go
+
+<span class="arrow">→</span> === Needs human ===
+<span class="arrow">→</span> (none)</div>
+
+      <h3>schema-change — notify others of interface changes</h3>
+      <p>Posts a <code>--tag schema-change</code> message visible to all sessions. Other sessions should check this before continuing work that touches the same interface, and pull before proceeding.</p>
+
+      <div class="code-block"><span class="skill">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken
+field. Affects: pkg/billing/client.go, pkg/middleware/auth.go"</div>
+
+      <h3>needs-human — route a decision to the human</h3>
+      <p>Posts a <code>--tag gate-human</code> message to the project campfire. The human monitors one command to see all decisions that need them, across all sessions.</p>
+
+      <div class="code-block"><span class="skill">/cf-coordinate</span> needs-human "Billing endpoint returns 200 on failed charge.
+Spec says 402. Change will break mobile app v2.1. Proceed?"
+
+<span class="comment"># Human monitoring from any terminal:</span>
+<span class="cmd">cf read</span> "$(cat .campfire/root)" --follow --tag gate-human</div>
+
+      <h3>Root campfire setup</h3>
+      <p>Run once per project to set up named views for the human monitoring experience:</p>
+
+      <div class="code-block"><span class="cmd">cf swarm start</span> --description "project-name coordination"
+root_cf=$(cat .campfire/root)
+
+<span class="comment"># Create named views (run once per project)</span>
+<span class="cmd">cf view create</span> "$root_cf" "needs-me" --predicate '(tag "gate-human")'
+<span class="cmd">cf view create</span> "$root_cf" "changes" --predicate '(tag "schema-change")'
+<span class="cmd">cf view create</span> "$root_cf" "sessions" --predicate '(tag "status")'
+
+<span class="comment"># Monitor human-needed decisions in real time:</span>
+<span class="cmd">cf read</span> "$root_cf" --follow --tag gate-human
+<span class="comment"># Or use the named view:</span>
+<span class="cmd">cf view read</span> "$root_cf" "needs-me"</div>
+
+      <h3>Example: two sessions coordinating</h3>
+      <div class="code-label">Session A — auth work</div>
+      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+<span class="arrow">→</span> Announcing: "Working on auth middleware refactor. Touching: pkg/auth/"
+<span class="arrow">→</span> No other sessions active.
+
+<span class="comment"># Later, after changing a shared interface:</span>
+<span class="skill">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken field"</div>
+
+      <div class="code-label">Session B — billing work</div>
+      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+<span class="arrow">→</span> Announcing: "Working on billing endpoint. Touching: pkg/billing/"
+<span class="arrow">→</span> Session A: working on auth middleware refactor (pkg/auth/)
+
+<span class="comment"># Before touching a file that uses AuthToken:</span>
+<span class="skill">/cf-coordinate</span> status
+<span class="arrow">→</span> Schema change: AuthToken struct changed. Affects: pkg/billing/client.go
+<span class="arrow">→</span> Pulling latest before continuing...</div>
+    </div>
+
+    <!-- Section 4: Agent specs -->
+    <div class="section" id="agent-specs">
+      <div class="section-header">
+        <span class="section-tag">agent specs</span>
+        <h2>Architect and Implementer Specs</h2>
+      </div>
+
+      <p>Two agent specs ship with the recipes: <code>architect.md</code> and <code>implementer.md</code>. Drop them into your project's <code>.claude/agents/</code> directory. Claude Code reads them automatically when spawning subagents.</p>
+
+      <h3>How to install</h3>
+      <div class="code-block"><span class="comment"># Copy to your project</span>
+<span class="cmd">cp</span> campfire-recipes/.claude/agents/architect.md   your-project/.claude/agents/
+<span class="cmd">cp</span> campfire-recipes/.claude/agents/implementer.md  your-project/.claude/agents/
+
+<span class="comment"># Customize for your project (see below)</span></div>
+
+      <h3>architect.md</h3>
+      <p>Defines the standing architect role. The spec covers:</p>
+      <ul>
+        <li>Loading design context once at start (file or design campfire)</li>
+        <li>Blocking on <code>cf read --follow --tag escalation</code></li>
+        <li>Checking prior rulings before making new ones</li>
+        <li>Escalating novel trade-offs to the human via <code>gate-human</code></li>
+        <li>Constraints: read-only on code, no implementation work</li>
+      </ul>
+
+      <p>The architect uses <strong>Sonnet</strong> tier by default (set in the frontmatter: <code>model: sonnet</code>). Upgrade to Opus for novel architectural decisions or complex multi-factor trade-offs.</p>
+
+      <h3>implementer.md</h3>
+      <p>Defines the implementer/worker role. The spec covers:</p>
+      <ul>
+        <li>Campfire integration — when and how to escalate, signal completion, and announce schema changes</li>
+        <li>Process: baseline tests → feature branch → implement → verify → PR</li>
+        <li>Flaky test handling — never retry and move on; diagnose the root cause</li>
+        <li>Merge protocol — push a branch, create a PR, signal readiness on campfire; do not merge to main</li>
+      </ul>
+
+      <p>The implementer also uses <strong>Sonnet</strong> tier. For purely mechanical tasks (template updates, config files, copy-paste refactors), you can dispatch on Haiku.</p>
+
+      <h3>Customizing for your project</h3>
+      <p>Both specs are starting points. Edit them to add:</p>
+      <ul>
+        <li>Project-specific conventions (language, framework, test runner)</li>
+        <li>Repo layout and where shared interfaces live</li>
+        <li>Escalation thresholds (what decisions require the architect vs. worker autonomy)</li>
+        <li>PR review requirements and merge criteria</li>
+      </ul>
+
+      <div class="callout">
+        <p>Keep the campfire integration section intact — that's the coordination contract between architect and implementer. Customize the rest freely.</p>
+      </div>
+
+      <h3>Model tier recommendations</h3>
+
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Default tier</th>
+            <th>Upgrade when</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>architect</td>
+            <td>Sonnet</td>
+            <td>Novel architecture, multi-factor trade-offs, strategic decisions</td>
+          </tr>
+          <tr>
+            <td>implementer</td>
+            <td>Sonnet</td>
+            <td>Complex integration, unfamiliar codebase, security-critical changes</td>
+          </tr>
+          <tr>
+            <td>implementer</td>
+            <td>Haiku</td>
+            <td>Mechanical edits, template work, config updates with no design decisions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 5: Topology -->
+    <div class="section" id="topology">
+      <div class="section-header">
+        <span class="section-tag">topology</span>
+        <h2>Campfire Topology</h2>
+      </div>
+
+      <p>Campfires nest. Tags propagate up through the hierarchy based on each campfire's <code>--require</code> configuration. This lets humans monitor one campfire and see everything that needs them from any depth below.</p>
+
+      <h3>Root → swarm → engagement hierarchy</h3>
+
+      <div class="topology"><span class="topo-root">Project Root Campfire</span>  <span class="topo-dim">← .campfire/root | Human monitors here</span>
+  │
+  ├── <span class="topo-mid">Swarm Campfire</span>  <span class="topo-dim">← cf swarm start</span>
+  │     --require gate-human     <span class="topo-tag"># human decisions propagate up</span>
+  │     --require schema-change  <span class="topo-tag"># interface changes propagate up</span>
+  │
+  │     ├── <span class="topo-leaf">Session A</span>  <span class="topo-dim">← /cf-coordinate start</span>
+  │     │     posts: status, schema-change, gate-human
+  │     │
+  │     └── <span class="topo-leaf">Session B</span>  <span class="topo-dim">← /cf-coordinate start</span>
+  │           posts: status, escalation, merge-ready
+  │
+  └── <span class="topo-mid">Sub-campfire</span>  <span class="topo-dim">← cf create (for focused channels)</span>
+        --require gate-human
+        └── <span class="topo-leaf">Targeted work</span></div>
+
+      <h3>Tag propagation</h3>
+      <p>When a campfire is created with <code>--require &lt;tag&gt;</code>, any message posted with that tag on a child campfire propagates to the parent automatically. The human never has to join the child campfire.</p>
+
+      <table class="prop-table">
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Meaning</th>
+            <th>Propagates to root</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>gate-human</td>
+            <td>Decision requires human input before work continues</td>
+            <td>Yes — require on swarm</td>
+          </tr>
+          <tr>
+            <td>schema-change</td>
+            <td>A shared interface changed; other sessions should pull</td>
+            <td>Yes — require on swarm</td>
+          </tr>
+          <tr>
+            <td>escalation</td>
+            <td>Worker needs architect ruling (blocks on cf await)</td>
+            <td>No — stays on swarm campfire</td>
+          </tr>
+          <tr>
+            <td>decision</td>
+            <td>Architect ruling (fulfills an escalation)</td>
+            <td>No — stays on swarm campfire</td>
+          </tr>
+          <tr>
+            <td>status</td>
+            <td>Session announcement or progress update</td>
+            <td>No — stays on swarm campfire</td>
+          </tr>
+          <tr>
+            <td>merge-ready</td>
+            <td>Worker has a PR ready for review</td>
+            <td>Optional — add to --require if needed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>When to create sub-campfires</h3>
+      <p>Use <code>cf create</code> for a sub-campfire when:</p>
+      <ul>
+        <li>A focused channel is needed for a specific area of work (e.g., a security audit, a sweep pass)</li>
+        <li>Three or more findings cluster around one topic</li>
+        <li>Two sessions need back-and-forth that would clutter the swarm campfire</li>
+      </ul>
+      <p>Disband sub-campfires when done. The swarm campfire is permanent for the duration of the session; the root campfire persists across sessions.</p>
+
+      <h3>Escalation cascade example</h3>
+      <p>A worker's question reaches the human without manual forwarding:</p>
+
+      <div class="code-block"><span class="comment"># Create the hierarchy</span>
+ROOT=$(cf create --description "project-root" --json | jq -r .id)
+TEAM=$(cf create --description "team-alpha" \
+  --require gate-human --require schema-change --json | jq -r .id)
+
+<span class="comment"># Human monitors the root only</span>
+<span class="cmd">cf read</span> "$ROOT" --follow --tag gate-human
+
+<span class="comment"># Worker posts to the team campfire</span>
+<span class="cmd">cf send</span> "$TEAM" --instance worker --tag gate-human \
+  "Need approval: migration will drop legacy_users table. 3 integrations still reference it."
+
+<span class="comment"># Message appears at the root. Human never joined the team campfire.</span>
+<span class="arrow">→</span> [gate-human] Need approval: migration will drop legacy_users table...</div>
+    </div>
+
+    <!-- Section 6: Troubleshooting -->
+    <div class="section" id="troubleshooting">
+      <div class="section-header">
+        <span class="section-tag">troubleshooting</span>
+        <h2>Troubleshooting</h2>
+      </div>
+
+      <h3>cf not found on PATH</h3>
+      <p>The Campfire CLI must be installed and on your PATH before any skill will work.</p>
+      <div class="code-block"><span class="comment"># Verify installation</span>
+<span class="cmd">cf version</span>
+<span class="comment"># Should print a version number. If command not found:</span>
+<span class="arrow">→</span> Install from https://getcampfire.dev
+<span class="arrow">→</span> Ensure the install directory is on PATH (e.g., ~/.local/bin)</div>
+
+      <h3>Skills not discovered by Claude Code</h3>
+      <p>Skills must be in the correct directory with the correct filename.</p>
+      <div class="code-block"><span class="comment"># Expected locations after install:</span>
+~/.claude/skills/cf-architect/SKILL.md
+~/.claude/skills/cf-escalate/SKILL.md
+~/.claude/skills/cf-coordinate/SKILL.md
+
+<span class="comment"># Verify:</span>
+<span class="cmd">ls</span> ~/.claude/skills/
+
+<span class="comment"># If missing, re-run the install:</span>
+<span class="cmd">cp -r</span> campfire-recipes/.claude/skills/* ~/.claude/skills/</div>
+      <p>New Claude Code sessions pick up skills automatically. Existing sessions pick them up on next invocation — no restart needed.</p>
+
+      <h3>No campfire found — "Start one with cf swarm start"</h3>
+      <p>The skills look for <code>.campfire/root</code> in the working directory. If it doesn't exist, they fall back to <code>cf ls</code> to discover campfires. If neither works:</p>
+      <div class="code-block"><span class="comment"># Create the project campfire from your project root:</span>
+<span class="cmd">cf swarm start</span> --description "your-project coordination"
+
+<span class="comment"># Verify it was created:</span>
+<span class="cmd">cat</span> .campfire/root
+<span class="cmd">cf swarm status</span></div>
+
+      <h3>Identity collision — two agents with the same identity</h3>
+      <p>If two sessions share the same <code>cf</code> identity, messages from one look like they came from the other. This is a tool configuration issue, not a protocol issue.</p>
+      <div class="code-block"><span class="comment"># Check the active identity:</span>
+<span class="cmd">cf id</span>
+
+<span class="comment"># Each agent session should have a distinct identity.</span>
+<span class="comment"># If they collide, run cf init in a separate home directory</span>
+<span class="comment"># or use --identity flag to specify a keyfile path.</span></div>
+
+      <h3>Escalation timed out — no architect responded</h3>
+      <p>The <code>cf await</code> timeout is 15 minutes by default. If no architect is running, escalations time out.</p>
+      <div class="code-block"><span class="comment"># Check if an architect is online:</span>
+<span class="cmd">cf read</span> "$(cat .campfire/root)" --tag status --all
+<span class="comment"># Look for: "Architect online. Monitoring for escalations."</span>
+
+<span class="comment"># If no architect is running, start one in another session:</span>
+<span class="skill">/cf-architect</span> "your design doc or description"
+
+<span class="comment"># Or fulfill the timed-out escalation manually:</span>
+<span class="cmd">cf send</span> &lt;campfire&gt; --fulfills &lt;msg-id&gt; --tag decision "Your ruling here."</div>
+
+      <h3>Debug commands</h3>
+      <div class="code-block"><span class="comment"># List all local campfires</span>
+<span class="cmd">cf ls</span>
+
+<span class="comment"># Read all messages on a campfire (including compacted)</span>
+<span class="cmd">cf read</span> &lt;campfire-id&gt; --all
+
+<span class="comment"># Check swarm status</span>
+<span class="cmd">cf swarm status</span>
+
+<span class="comment"># Read a specific tag</span>
+<span class="cmd">cf read</span> &lt;campfire-id&gt; --tag escalation --all
+<span class="cmd">cf read</span> &lt;campfire-id&gt; --tag decision --all
+<span class="cmd">cf read</span> &lt;campfire-id&gt; --tag gate-human --peek</div>
+    </div>
+
+    <!-- Next steps -->
+    <div class="section" id="next-steps">
+      <div class="section-header">
+        <span class="section-tag">→</span>
+        <h2>What to read next</h2>
+      </div>
+
+      <div class="next-links">
+        <a href="quickstart.html" class="next-card">
+          <div class="next-card-label">Guide</div>
+          <div class="next-card-title">Quickstart</div>
+          <div class="next-card-sub">Start an architect and worker session in 5 minutes. See real-time escalation in action.</div>
+        </a>
+        <a href="index.html" class="next-card">
+          <div class="next-card-label">Overview</div>
+          <div class="next-card-title">How the patterns work</div>
+          <div class="next-card-sub">Standing architect, escalation cascade, and multi-session coordination — the three patterns explained.</div>
+        </a>
+        <a href="https://github.com/campfire-net/campfire-recipes/tree/main/examples/standing-architect" class="next-card">
+          <div class="next-card-label">Example</div>
+          <div class="next-card-title">Standing Architect Demo</div>
+          <div class="next-card-sub">Runnable demo with architect and two workers. Watch real escalation and fulfillment.</div>
+        </a>
+        <a href="https://getcampfire.dev" class="next-card">
+          <div class="next-card-label">Protocol</div>
+          <div class="next-card-title">getcampfire.dev</div>
+          <div class="next-card-sub">The Campfire protocol spec and CLI reference. How campfires, messages, and tags actually work.</div>
+        </a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">campfire/<span>recipes</span></div>
+      <div class="footer-links">
+        <a href="index.html">Overview</a>
+        <a href="quickstart.html">Quickstart</a>
+        <a href="https://getcampfire.dev">getcampfire.dev</a>
+        <a href="https://github.com/campfire-net/campfire-recipes">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
