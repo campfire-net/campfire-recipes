@@ -8,88 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --surface-alt: #181818;
-      --border: #222222;
-      --text: #e8e4df;
-      --text-secondary: #8a8480;
-      --amber: #d97706;
-      --amber-light: #f59e0b;
-      --teal: #0d9488;
-      --teal-light: #14b8a6;
-      --font-heading: 'Rubik', system-ui, sans-serif;
-      --font-body: 'Rubik', system-ui, sans-serif;
-      --font-mono: 'Fira Code', 'Courier New', monospace;
-    }
-
-    html { font-size: 16px; scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: var(--teal-light); text-decoration: none; }
-    a:hover { color: var(--teal); }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    /* Nav */
-    nav {
-      border-bottom: 1px solid var(--border);
-      padding: 18px 0;
-      position: sticky;
-      top: 0;
-      background: rgba(10, 10, 10, 0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .nav-brand {
-      font-family: var(--font-mono);
-      font-size: 15px;
-      color: var(--text);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-brand span { color: var(--amber); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      transition: color 0.15s;
-    }
-
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
-
     /* Page layout */
     .page-layout {
       display: grid;
@@ -98,8 +18,8 @@
       padding-top: 48px;
       max-width: 1060px;
       margin: 0 auto;
-      padding-left: 32px;
-      padding-right: 32px;
+      padding-left: var(--ds-gutter);
+      padding-right: var(--ds-gutter);
     }
 
     /* Sidebar */
@@ -110,9 +30,9 @@
     }
 
     .sidebar-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 10px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 12px;
@@ -128,7 +48,7 @@
     .sidebar-nav a {
       display: block;
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       padding: 5px 10px;
       border-radius: 5px;
       border-left: 2px solid transparent;
@@ -136,14 +56,14 @@
     }
 
     .sidebar-nav a:hover {
-      color: var(--text);
-      border-left-color: var(--amber);
+      color: var(--ds-text);
+      border-left-color: var(--ds-accent-primary);
     }
 
     .sidebar-nav .step-num {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       margin-right: 6px;
     }
 
@@ -155,30 +75,22 @@
 
     .page-header {
       margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--ds-space-lg);
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .page-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 12px;
     }
 
-    h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-
     .page-sub {
       font-size: 16px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
     }
 
     /* Sections */
@@ -192,14 +104,14 @@
       gap: 14px;
       margin-bottom: 20px;
       padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .section-tag {
-      font-family: var(--font-mono);
-      font-size: 12px;
+      font-family: var(--ds-font-mono);
+      font-size: var(--ds-text-xs);
       font-weight: 600;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       background: rgba(217, 119, 6, 0.1);
       border: 1px solid rgba(217, 119, 6, 0.25);
       padding: 3px 10px;
@@ -216,7 +128,7 @@
     h3 {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 10px;
@@ -224,16 +136,16 @@
     }
 
     h4 {
-      font-size: 14px;
+      font-size: var(--ds-text-sm);
       font-weight: 600;
-      color: var(--text);
+      color: var(--ds-text);
       margin-bottom: 8px;
       margin-top: 20px;
     }
 
     p {
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       margin-bottom: 16px;
       line-height: 1.7;
     }
@@ -245,69 +157,41 @@
 
     li {
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       margin-bottom: 6px;
       line-height: 1.6;
     }
 
     li strong {
-      color: var(--text);
-    }
-
-    code {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--teal-light);
-      background: rgba(13, 148, 136, 0.08);
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-
-    .code-block {
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.65;
-      overflow-x: auto;
-      white-space: pre;
-      color: #bbb;
-      margin-bottom: 16px;
-    }
-
-    .code-block .comment { color: #3a3a3a; }
-    .code-block .cmd { color: var(--teal-light); }
-    .code-block .arrow { color: var(--amber); }
-    .code-block .skill { color: var(--amber-light); }
-
-    .code-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+      color: var(--ds-text);
     }
 
     /* Callout */
     .callout {
       background: rgba(217, 119, 6, 0.06);
       border: 1px solid rgba(217, 119, 6, 0.2);
-      border-left: 3px solid var(--amber);
-      border-radius: 0 8px 8px 0;
+      border-left: 3px solid var(--ds-accent-primary);
+      border-radius: 0 var(--ds-radius) var(--ds-radius) 0;
       padding: 16px 20px;
       margin-bottom: 20px;
     }
 
     .callout p {
       margin: 0;
-      font-size: 14px;
+      font-size: var(--ds-text-sm);
     }
 
     .callout-teal {
       background: rgba(13, 148, 136, 0.06);
       border-color: rgba(13, 148, 136, 0.2);
-      border-left-color: var(--teal);
+      border-left-color: var(--ds-accent-secondary);
+    }
+
+    .code-label {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      color: var(--ds-text-secondary);
+      margin-bottom: 6px;
     }
 
     /* Terminal pair */
@@ -319,19 +203,19 @@
     }
 
     .terminal {
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--ds-code-bg);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
       overflow: hidden;
     }
 
     .terminal-bar {
       background: #161616;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--ds-border);
       padding: 8px 14px;
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -341,12 +225,12 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--border);
+      background: var(--ds-border);
     }
 
     .terminal-body {
       padding: 16px;
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 12px;
       line-height: 1.65;
       color: #bbb;
@@ -354,18 +238,18 @@
     }
 
     .t-comment { color: #3a3a3a; }
-    .t-cmd { color: var(--teal-light); }
-    .t-arrow { color: var(--amber); }
+    .t-cmd { color: var(--ds-accent-secondary-light); }
+    .t-arrow { color: var(--ds-accent-primary); }
     .t-dim { color: #555; }
     .t-green { color: #4ade80; }
-    .t-amber { color: var(--amber); }
+    .t-amber { color: var(--ds-accent-primary); }
 
     /* Prop table */
     .prop-table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
-      font-size: 14px;
+      font-size: var(--ds-text-sm);
     }
 
     .prop-table th {
@@ -374,22 +258,22 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .prop-table td {
       padding: 10px 12px;
       border-bottom: 1px solid #181818;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       vertical-align: top;
     }
 
     .prop-table td:first-child {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 13px;
-      color: var(--teal-light);
+      color: var(--ds-accent-secondary-light);
       white-space: nowrap;
     }
 
@@ -397,11 +281,11 @@
 
     /* Topology diagram */
     .topology {
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--ds-code-bg);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
       padding: 24px;
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 13px;
       line-height: 1.8;
       color: #bbb;
@@ -410,8 +294,8 @@
       overflow-x: auto;
     }
 
-    .topology .topo-root { color: var(--amber); }
-    .topology .topo-mid { color: var(--teal-light); }
+    .topology .topo-root { color: var(--ds-accent-primary); }
+    .topology .topo-mid { color: var(--ds-accent-secondary-light); }
     .topology .topo-leaf { color: #bbb; }
     .topology .topo-dim { color: #3a3a3a; }
     .topology .topo-tag { color: #777; }
@@ -421,100 +305,65 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 8px;
+      margin-top: var(--ds-space-xs);
     }
 
     .next-card {
       display: block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
       padding: 20px;
       transition: border-color 0.15s;
     }
 
     .next-card:hover {
-      border-color: var(--amber);
-      color: var(--text);
+      border-color: var(--ds-accent-primary);
+      color: var(--ds-text);
     }
 
     .next-card-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       margin-bottom: 6px;
     }
 
     .next-card-title {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--ds-text);
       margin-bottom: 4px;
     }
 
     .next-card-sub {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
     }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 36px 0;
-      margin-top: 0;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-brand {
-      font-family: var(--font-mono);
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .footer-brand span { color: var(--amber); }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .footer-links a:hover { color: var(--text); }
+    /* ds-code-block margin for doc pages */
+    .ds-code-block { margin-bottom: 16px; }
 
     @media (max-width: 700px) {
       .page-layout { grid-template-columns: 1fr; }
       .sidebar { display: none; }
       .terminal-pair { grid-template-columns: 1fr; }
       .next-links { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="container">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-brand">campfire/<span>recipes</span></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="quickstart.html">Quickstart</a></li>
-        <li><a href="manual.html" class="active">Manual</a></li>
-        <li><a href="https://getcampfire.dev">Protocol</a></li>
-        <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
-      </ul>
-    </div>
+<nav class="ds-nav">
+  <div class="ds-container">
+    <a href="index.html" class="ds-nav-brand">campfire/<span>recipes</span></a>
+    <ul class="ds-nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="quickstart.html">Quickstart</a></li>
+      <li><a href="manual.html" class="active">Manual</a></li>
+      <li><a href="https://getcampfire.dev">Protocol</a></li>
+      <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
+    </ul>
   </div>
 </nav>
 
@@ -608,7 +457,7 @@
 
       <h3>Example session</h3>
       <div class="code-label">Session 1 — invoke the skill in Claude Code</div>
-      <div class="code-block"><span class="skill">/cf-architect</span> "docs/design/auth-system.md"
+      <div class="ds-code-block"><span class="cmd">/cf-architect</span> "docs/design/auth-system.md"
 
 <span class="comment"># Claude Code:</span>
 <span class="arrow">→</span> Found swarm campfire from .campfire/root
@@ -762,7 +611,7 @@ pessimistic?"
       <h3>start — join or create the project campfire</h3>
       <p>Reads <code>.campfire/root</code>. Creates a swarm campfire if none exists. Announces this session. Reads what other sessions have posted (status, schema changes). Reports active sessions and recent changes.</p>
 
-      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> start
 
 <span class="arrow">→</span> Project campfire: abc123...
 <span class="arrow">→</span> Announcing: "Session started. Working on: auth middleware refactor."
@@ -772,7 +621,7 @@ pessimistic?"
       <h3>status — see what's happening</h3>
       <p>Reads all status messages, schema changes, and pending human decisions from the project campfire. Run this before starting a new file or touching a shared interface.</p>
 
-      <div class="code-block"><span class="skill">/cf-coordinate</span> status
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> status
 
 <span class="arrow">→</span> === Active sessions ===
 <span class="arrow">→</span> Session A: auth middleware refactor (pkg/auth/, pkg/middleware/)
@@ -787,13 +636,13 @@ pessimistic?"
       <h3>schema-change — notify others of interface changes</h3>
       <p>Posts a <code>--tag schema-change</code> message visible to all sessions. Other sessions should check this before continuing work that touches the same interface, and pull before proceeding.</p>
 
-      <div class="code-block"><span class="skill">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken
 field. Affects: pkg/billing/client.go, pkg/middleware/auth.go"</div>
 
       <h3>needs-human — route a decision to the human</h3>
       <p>Posts a <code>--tag gate-human</code> message to the project campfire. The human monitors one command to see all decisions that need them, across all sessions.</p>
 
-      <div class="code-block"><span class="skill">/cf-coordinate</span> needs-human "Billing endpoint returns 200 on failed charge.
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> needs-human "Billing endpoint returns 200 on failed charge.
 Spec says 402. Change will break mobile app v2.1. Proceed?"
 
 <span class="comment"># Human monitoring from any terminal:</span>
@@ -802,7 +651,7 @@ Spec says 402. Change will break mobile app v2.1. Proceed?"
       <h3>Root campfire setup</h3>
       <p>Run once per project to set up named views for the human monitoring experience:</p>
 
-      <div class="code-block"><span class="cmd">cf swarm start</span> --description "project-name coordination"
+      <div class="ds-code-block"><span class="cmd">cf swarm start</span> --description "project-name coordination"
 root_cf=$(cat .campfire/root)
 
 <span class="comment"># Create named views (run once per project)</span>
@@ -817,20 +666,20 @@ root_cf=$(cat .campfire/root)
 
       <h3>Example: two sessions coordinating</h3>
       <div class="code-label">Session A — auth work</div>
-      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> start
 <span class="arrow">→</span> Announcing: "Working on auth middleware refactor. Touching: pkg/auth/"
 <span class="arrow">→</span> No other sessions active.
 
 <span class="comment"># Later, after changing a shared interface:</span>
-<span class="skill">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken field"</div>
+<span class="cmd">/cf-coordinate</span> schema-change "Changed AuthToken struct: added RefreshToken field"</div>
 
       <div class="code-label">Session B — billing work</div>
-      <div class="code-block"><span class="skill">/cf-coordinate</span> start
+      <div class="ds-code-block"><span class="cmd">/cf-coordinate</span> start
 <span class="arrow">→</span> Announcing: "Working on billing endpoint. Touching: pkg/billing/"
 <span class="arrow">→</span> Session A: working on auth middleware refactor (pkg/auth/)
 
 <span class="comment"># Before touching a file that uses AuthToken:</span>
-<span class="skill">/cf-coordinate</span> status
+<span class="cmd">/cf-coordinate</span> status
 <span class="arrow">→</span> Schema change: AuthToken struct changed. Affects: pkg/billing/client.go
 <span class="arrow">→</span> Pulling latest before continuing...</div>
     </div>
@@ -845,7 +694,7 @@ root_cf=$(cat .campfire/root)
       <p>Two agent specs ship with the recipes: <code>architect.md</code> and <code>implementer.md</code>. Drop them into your project's <code>.claude/agents/</code> directory. Claude Code reads them automatically when spawning subagents.</p>
 
       <h3>How to install</h3>
-      <div class="code-block"><span class="comment"># Copy to your project</span>
+      <div class="ds-code-block"><span class="comment"># Copy to your project</span>
 <span class="cmd">cp</span> campfire-recipes/.claude/agents/architect.md   your-project/.claude/agents/
 <span class="cmd">cp</span> campfire-recipes/.claude/agents/implementer.md  your-project/.claude/agents/
 
@@ -1001,7 +850,7 @@ root_cf=$(cat .campfire/root)
       <h3>Escalation cascade example</h3>
       <p>A worker's question reaches the human without manual forwarding:</p>
 
-      <div class="code-block"><span class="comment"># Create the hierarchy</span>
+      <div class="ds-code-block"><span class="comment"># Create the hierarchy</span>
 ROOT=$(cf create --description "project-root" --json | jq -r .id)
 TEAM=$(cf create --description "team-alpha" \
   --require gate-human --require schema-change --json | jq -r .id)
@@ -1026,7 +875,7 @@ TEAM=$(cf create --description "team-alpha" \
 
       <h3>cf not found on PATH</h3>
       <p>The Campfire CLI must be installed and on your PATH before any skill will work.</p>
-      <div class="code-block"><span class="comment"># Verify installation</span>
+      <div class="ds-code-block"><span class="comment"># Verify installation</span>
 <span class="cmd">cf version</span>
 <span class="comment"># Should print a version number. If command not found:</span>
 <span class="arrow">→</span> Install from https://getcampfire.dev
@@ -1034,7 +883,7 @@ TEAM=$(cf create --description "team-alpha" \
 
       <h3>Skills not discovered by Claude Code</h3>
       <p>Skills must be in the correct directory with the correct filename.</p>
-      <div class="code-block"><span class="comment"># Expected locations after install:</span>
+      <div class="ds-code-block"><span class="comment"># Expected locations after install:</span>
 ~/.claude/skills/cf-architect/SKILL.md
 ~/.claude/skills/cf-escalate/SKILL.md
 ~/.claude/skills/cf-coordinate/SKILL.md
@@ -1048,7 +897,7 @@ TEAM=$(cf create --description "team-alpha" \
 
       <h3>No campfire found — "Start one with cf swarm start"</h3>
       <p>The skills look for <code>.campfire/root</code> in the working directory. If it doesn't exist, they fall back to <code>cf ls</code> to discover campfires. If neither works:</p>
-      <div class="code-block"><span class="comment"># Create the project campfire from your project root:</span>
+      <div class="ds-code-block"><span class="comment"># Create the project campfire from your project root:</span>
 <span class="cmd">cf swarm start</span> --description "your-project coordination"
 
 <span class="comment"># Verify it was created:</span>
@@ -1057,7 +906,7 @@ TEAM=$(cf create --description "team-alpha" \
 
       <h3>Identity collision — two agents with the same identity</h3>
       <p>If two sessions share the same <code>cf</code> identity, messages from one look like they came from the other. This is a tool configuration issue, not a protocol issue.</p>
-      <div class="code-block"><span class="comment"># Check the active identity:</span>
+      <div class="ds-code-block"><span class="comment"># Check the active identity:</span>
 <span class="cmd">cf id</span>
 
 <span class="comment"># Each agent session should have a distinct identity.</span>
@@ -1066,18 +915,18 @@ TEAM=$(cf create --description "team-alpha" \
 
       <h3>Escalation timed out — no architect responded</h3>
       <p>The <code>cf await</code> timeout is 15 minutes by default. If no architect is running, escalations time out.</p>
-      <div class="code-block"><span class="comment"># Check if an architect is online:</span>
+      <div class="ds-code-block"><span class="comment"># Check if an architect is online:</span>
 <span class="cmd">cf read</span> "$(cat .campfire/root)" --tag status --all
 <span class="comment"># Look for: "Architect online. Monitoring for escalations."</span>
 
 <span class="comment"># If no architect is running, start one in another session:</span>
-<span class="skill">/cf-architect</span> "your design doc or description"
+<span class="cmd">/cf-architect</span> "your design doc or description"
 
 <span class="comment"># Or fulfill the timed-out escalation manually:</span>
 <span class="cmd">cf send</span> &lt;campfire&gt; --fulfills &lt;msg-id&gt; --tag decision "Your ruling here."</div>
 
       <h3>Debug commands</h3>
-      <div class="code-block"><span class="comment"># List all local campfires</span>
+      <div class="ds-code-block"><span class="comment"># List all local campfires</span>
 <span class="cmd">cf ls</span>
 
 <span class="comment"># Read all messages on a campfire (including compacted)</span>
@@ -1126,11 +975,11 @@ TEAM=$(cf create --description "team-alpha" \
   </main>
 </div>
 
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-brand">campfire/<span>recipes</span></div>
-      <div class="footer-links">
+<footer class="ds-footer">
+  <div class="ds-container">
+    <div class="ds-footer-inner">
+      <div class="ds-footer-brand">campfire/<span>recipes</span></div>
+      <div class="ds-footer-links">
         <a href="index.html">Overview</a>
         <a href="quickstart.html">Quickstart</a>
         <a href="https://getcampfire.dev">getcampfire.dev</a>

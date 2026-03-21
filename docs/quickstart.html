@@ -8,88 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --surface-alt: #181818;
-      --border: #222222;
-      --text: #e8e4df;
-      --text-secondary: #8a8480;
-      --amber: #d97706;
-      --amber-light: #f59e0b;
-      --teal: #0d9488;
-      --teal-light: #14b8a6;
-      --font-heading: 'Rubik', system-ui, sans-serif;
-      --font-body: 'Rubik', system-ui, sans-serif;
-      --font-mono: 'Fira Code', 'Courier New', monospace;
-    }
-
-    html { font-size: 16px; scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: var(--teal-light); text-decoration: none; }
-    a:hover { color: var(--teal); }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    /* Nav */
-    nav {
-      border-bottom: 1px solid var(--border);
-      padding: 18px 0;
-      position: sticky;
-      top: 0;
-      background: rgba(10, 10, 10, 0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .nav-brand {
-      font-family: var(--font-mono);
-      font-size: 15px;
-      color: var(--text);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-brand span { color: var(--amber); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      transition: color 0.15s;
-    }
-
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
-
     /* Page layout */
     .page-layout {
       display: grid;
@@ -98,8 +18,8 @@
       padding-top: 48px;
       max-width: 1060px;
       margin: 0 auto;
-      padding-left: 32px;
-      padding-right: 32px;
+      padding-left: var(--ds-gutter);
+      padding-right: var(--ds-gutter);
     }
 
     /* Sidebar */
@@ -110,9 +30,9 @@
     }
 
     .sidebar-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 10px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 12px;
@@ -128,7 +48,7 @@
     .sidebar-nav a {
       display: block;
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       padding: 5px 10px;
       border-radius: 5px;
       border-left: 2px solid transparent;
@@ -136,14 +56,14 @@
     }
 
     .sidebar-nav a:hover {
-      color: var(--text);
-      border-left-color: var(--amber);
+      color: var(--ds-text);
+      border-left-color: var(--ds-accent-primary);
     }
 
     .sidebar-nav .step-num {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       margin-right: 6px;
     }
 
@@ -155,30 +75,22 @@
 
     .page-header {
       margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--ds-space-lg);
+      border-bottom: 1px solid var(--ds-border);
     }
 
     .page-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 12px;
     }
 
-    h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-
     .page-sub {
       font-size: 16px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
     }
 
     /* Steps */
@@ -194,10 +106,10 @@
     }
 
     .step-number {
-      font-family: var(--font-mono);
-      font-size: 12px;
+      font-family: var(--ds-font-mono);
+      font-size: var(--ds-text-xs);
       font-weight: 600;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       background: rgba(217, 119, 6, 0.1);
       border: 1px solid rgba(217, 119, 6, 0.25);
       padding: 3px 10px;
@@ -214,7 +126,7 @@
     h3 {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 10px;
@@ -223,7 +135,7 @@
 
     p {
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       margin-bottom: 16px;
       line-height: 1.7;
     }
@@ -235,69 +147,41 @@
 
     li {
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       margin-bottom: 6px;
       line-height: 1.6;
     }
 
     li strong {
-      color: var(--text);
-    }
-
-    code {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--teal-light);
-      background: rgba(13, 148, 136, 0.08);
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-
-    .code-block {
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.65;
-      overflow-x: auto;
-      white-space: pre;
-      color: #bbb;
-      margin-bottom: 16px;
-    }
-
-    .code-block .comment { color: #3a3a3a; }
-    .code-block .cmd { color: var(--teal-light); }
-    .code-block .arrow { color: var(--amber); }
-    .code-block .skill { color: var(--amber-light); }
-
-    .code-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+      color: var(--ds-text);
     }
 
     /* Callout */
     .callout {
       background: rgba(217, 119, 6, 0.06);
       border: 1px solid rgba(217, 119, 6, 0.2);
-      border-left: 3px solid var(--amber);
-      border-radius: 0 8px 8px 0;
+      border-left: 3px solid var(--ds-accent-primary);
+      border-radius: 0 var(--ds-radius) var(--ds-radius) 0;
       padding: 16px 20px;
       margin-bottom: 20px;
     }
 
     .callout p {
       margin: 0;
-      font-size: 14px;
+      font-size: var(--ds-text-sm);
     }
 
     .callout-teal {
       background: rgba(13, 148, 136, 0.06);
       border-color: rgba(13, 148, 136, 0.2);
-      border-left-color: var(--teal);
+      border-left-color: var(--ds-accent-secondary);
+    }
+
+    .code-label {
+      font-family: var(--ds-font-mono);
+      font-size: 11px;
+      color: var(--ds-text-secondary);
+      margin-bottom: 6px;
     }
 
     /* Terminal illustration */
@@ -309,19 +193,19 @@
     }
 
     .terminal {
-      background: #0d0d0d;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--ds-code-bg);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
       overflow: hidden;
     }
 
     .terminal-bar {
       background: #161616;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--ds-border);
       padding: 8px 14px;
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -331,12 +215,12 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--border);
+      background: var(--ds-border);
     }
 
     .terminal-body {
       padding: 16px;
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 12px;
       line-height: 1.65;
       color: #bbb;
@@ -344,111 +228,76 @@
     }
 
     .t-comment { color: #3a3a3a; }
-    .t-cmd { color: var(--teal-light); }
-    .t-arrow { color: var(--amber); }
+    .t-cmd { color: var(--ds-accent-secondary-light); }
+    .t-arrow { color: var(--ds-accent-primary); }
     .t-dim { color: #555; }
     .t-green { color: #4ade80; }
-    .t-amber { color: var(--amber); }
+    .t-amber { color: var(--ds-accent-primary); }
 
     /* Next steps */
     .next-links {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 8px;
+      margin-top: var(--ds-space-xs);
     }
 
     .next-card {
       display: block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--ds-surface);
+      border: 1px solid var(--ds-border);
+      border-radius: var(--ds-radius);
       padding: 20px;
       transition: border-color 0.15s;
     }
 
     .next-card:hover {
-      border-color: var(--amber);
-      color: var(--text);
+      border-color: var(--ds-accent-primary);
+      color: var(--ds-text);
     }
 
     .next-card-label {
-      font-family: var(--font-mono);
+      font-family: var(--ds-font-mono);
       font-size: 11px;
-      color: var(--amber);
+      color: var(--ds-accent-primary);
       margin-bottom: 6px;
     }
 
     .next-card-title {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--ds-text);
       margin-bottom: 4px;
     }
 
     .next-card-sub {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ds-text-secondary);
     }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 36px 0;
-      margin-top: 0;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-brand {
-      font-family: var(--font-mono);
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .footer-brand span { color: var(--amber); }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .footer-links a:hover { color: var(--text); }
+    /* ds-code-block with margin for doc pages */
+    .ds-code-block { margin-bottom: 16px; }
 
     @media (max-width: 700px) {
       .page-layout { grid-template-columns: 1fr; }
       .sidebar { display: none; }
       .terminal-pair { grid-template-columns: 1fr; }
       .next-links { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="container">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-brand">campfire/<span>recipes</span></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="quickstart.html" class="active">Quickstart</a></li>
-        <li><a href="manual.html">Manual</a></li>
-        <li><a href="https://getcampfire.dev">Protocol</a></li>
-        <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
-      </ul>
-    </div>
+<nav class="ds-nav">
+  <div class="ds-container">
+    <a href="index.html" class="ds-nav-brand">campfire/<span>recipes</span></a>
+    <ul class="ds-nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="quickstart.html" class="active">Quickstart</a></li>
+      <li><a href="manual.html">Manual</a></li>
+      <li><a href="https://getcampfire.dev">Protocol</a></li>
+      <li><a href="https://github.com/campfire-net/campfire-recipes">GitHub</a></li>
+    </ul>
   </div>
 </nav>
 
@@ -504,7 +353,7 @@
 
       <p>Clone the repo and copy the skills to your Claude Code global directory:</p>
 
-      <div class="code-block"><span class="comment"># Clone the recipes</span>
+      <div class="ds-code-block"><span class="comment"># Clone the recipes</span>
 <span class="cmd">git clone</span> https://github.com/campfire-net/campfire-recipes.git
 
 <span class="comment"># Copy skills to Claude Code global directory</span>
@@ -529,7 +378,7 @@
 
       <p>Navigate to the project you want agents to coordinate on, then create a root campfire. This writes <code>.campfire/root</code> so all agents in this directory auto-discover it.</p>
 
-      <div class="code-block"><span class="cmd">cd</span> your-project/
+      <div class="ds-code-block"><span class="cmd">cd</span> your-project/
 
 <span class="comment"># Start a swarm campfire anchored to this project</span>
 <span class="cmd">cf swarm start</span> --description "quickstart demo"
@@ -553,8 +402,8 @@
       <p>In a new Claude Code session (Tab 2), launch the architect with a design document. The architect loads the design context once, then waits silently for questions.</p>
 
       <div class="code-label">Tab 2 — Architect session</div>
-      <div class="code-block"><span class="comment"># In Claude Code, invoke the skill:</span>
-<span class="skill">/cf-architect</span> "docs/design/architecture.md"
+      <div class="ds-code-block"><span class="comment"># In Claude Code, invoke the skill:</span>
+<span class="cmd">/cf-architect</span> "docs/design/architecture.md"
 
 <span class="comment"># Claude will:</span>
 <span class="arrow">→</span> Find the swarm campfire from .campfire/root
@@ -580,12 +429,12 @@
       <p>In another Claude Code session (Tab 3), start working. When you hit a design decision, escalate instead of guessing.</p>
 
       <div class="code-label">Tab 3 — Worker session</div>
-      <div class="code-block"><span class="comment"># Start coordination</span>
-<span class="skill">/cf-coordinate</span> start
+      <div class="ds-code-block"><span class="comment"># Start coordination</span>
+<span class="cmd">/cf-coordinate</span> start
 
 <span class="comment"># Work on your task...</span>
 <span class="comment"># Hit a design question — escalate:</span>
-<span class="skill">/cf-escalate</span> "Should auth tokens use optimistic
+<span class="cmd">/cf-escalate</span> "Should auth tokens use optimistic
 or pessimistic locking? We have high read volume
 but occasional concurrent writes. See pkg/auth/token.go."
 
@@ -654,7 +503,7 @@ See design §3.2."
 
       <h3>When you're done</h3>
       <p>Tear down the swarm campfire when the work session is complete:</p>
-      <div class="code-block"><span class="cmd">cf swarm end</span>
+      <div class="ds-code-block"><span class="cmd">cf swarm end</span>
 <span class="arrow">→</span> Swarm ended. Messages preserved in local store.</div>
     </div>
 
@@ -694,11 +543,11 @@ See design §3.2."
   </main>
 </div>
 
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-brand">campfire/<span>recipes</span></div>
-      <div class="footer-links">
+<footer class="ds-footer">
+  <div class="ds-container">
+    <div class="ds-footer-inner">
+      <div class="ds-footer-brand">campfire/<span>recipes</span></div>
+      <div class="ds-footer-links">
         <a href="index.html">Overview</a>
         <a href="manual.html">Manual</a>
         <a href="https://getcampfire.dev">getcampfire.dev</a>
