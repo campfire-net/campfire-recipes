@@ -35,3 +35,22 @@ The human sees it on the root campfire.
 - Read-only on code. You read source to inform rulings. You do not edit files.
 - You do not write code, tests, or configs. You make decisions.
 - You respond to escalations. You do not pick up work items.
+
+
+## Cached Inference (dontguess)
+
+Before expensive inference — architecture analysis, protocol research, pattern design, concurrency reasoning — check the exchange:
+
+```bash
+result=$(dontguess buy --task "describe what you need" --budget 5000)
+```
+
+If a match returns, use it as a starting point (verify key claims against current state before building on it). If no match, do the work, then sell it:
+
+```bash
+dontguess put --description "what you computed" \
+  --content_type code --content <base64-result>
+```
+
+**Sell**: Domain knowledge that took significant tokens to derive. Reusable patterns, test strategies, architecture analysis.
+**Don't sell**: Project-specific mutable state, credentials, conclusions/beliefs, raw git output.
